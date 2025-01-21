@@ -12,10 +12,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [buffered, setBuffered] = useState(0);
-    const [duration, setDuration] = useState(0);
-    const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [playbackRate, setPlaybackRate] = useState(1); // Add playback rate state
+  const [isFullScreen, setIsFullScreen] = useState(false); // Add full-screen state
 
   const playerRef = useRef<ReactPlayer>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -43,14 +46,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
     }
   };
 
-    const handleDuration = (duration: number) => {
-        setDuration(duration);
-    };
+  const handleDuration = (duration: number) => {
+    setDuration(duration);
+  };
 
   const handleProgress = (state: any) => {
     setProgress(state.played);
     setBuffered(state.loaded);
-      setCurrentTime(state.playedSeconds)
+    setCurrentTime(state.playedSeconds);
   };
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,14 +62,30 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
       setProgress(parseFloat(e.target.value));
     }
   };
-    useEffect(() => {
-        if(playerRef.current){
-            setDuration(playerRef.current.getDuration())
-        }
-    },[videoUrl])
+
+  const handlePlaybackRateChange = (rate: number) => {
+    setPlaybackRate(rate);
+  };
+
+  const handleFullScreen = () => {
+    if (playerContainerRef.current) {
+      if (!isFullScreen) {
+        playerContainerRef.current.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+      setIsFullScreen(!isFullScreen);
+    }
+  };
+
+  useEffect(() => {
+    if (playerRef.current) {
+      setDuration(playerRef.current.getDuration());
+    }
+  }, [videoUrl]);
 
   return (
-    <div>
+    <div ref={playerContainerRef}>
       <div className="relative aspect-video bg-dark-secondary rounded-xl overflow-hidden shadow-custom">
         <ReactPlayer
           ref={playerRef}
@@ -78,7 +97,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
           height="100%"
           className="absolute top-0 left-0"
           onProgress={handleProgress}
-            onDuration={handleDuration}
+          onDuration={handleDuration}
+          playbackRate={playbackRate} // Add playback rate prop
         />
       </div>
       <Controls
@@ -92,8 +112,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
         progress={progress}
         buffered={buffered}
         onProgressChange={handleProgressChange}
-          duration={duration}
-          currentTime={currentTime}
+        duration={duration}
+        currentTime={currentTime}
+        playbackRate={playbackRate}
+        onPlaybackRateChange={handlePlaybackRateChange}
+        onFullScreen={handleFullScreen}
+        isFullScreen={isFullScreen}
       />
     </div>
   );

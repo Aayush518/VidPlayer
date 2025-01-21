@@ -1,5 +1,5 @@
 import React from "react";
-import { Play, Pause, Volume2, VolumeX, RotateCw, RotateCcw } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, RotateCw, RotateCcw, Fullscreen, Minus, Plus } from "lucide-react";
 
 interface ControlsProps {
   isPlaying: boolean;
@@ -14,6 +14,10 @@ interface ControlsProps {
   onProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   duration: number;
   currentTime: number;
+  playbackRate: number;
+  onPlaybackRateChange: (rate: number) => void;
+  onFullScreen: () => void;
+  isFullScreen: boolean;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -29,12 +33,17 @@ const Controls: React.FC<ControlsProps> = ({
   onProgressChange,
   duration,
   currentTime,
+  playbackRate,
+  onPlaybackRateChange,
+  onFullScreen,
+  isFullScreen,
 }) => {
-    const formatTime = (time: number): string => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    };
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
   return (
     <div className="mt-4 flex flex-col bg-dark-secondary p-4 rounded-xl shadow-custom">
       <div className="flex items-center gap-4">
@@ -69,6 +78,23 @@ const Controls: React.FC<ControlsProps> = ({
             className="w-24 accent-accent-primary"
           />
         </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onPlaybackRateChange(playbackRate - 0.25)}
+            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
+          >
+            <Minus className="w-6 h-6 text-accent-primary" />
+          </button>
+          <span className="text-sm text-text-secondary font-secondary">
+            {playbackRate}x
+          </span>
+          <button
+            onClick={() => onPlaybackRateChange(playbackRate + 0.25)}
+            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
+          >
+            <Plus className="w-6 h-6 text-accent-primary" />
+          </button>
+        </div>
         <div className="flex items-center gap-2 ml-auto">
           <button
             onClick={() => onSeek(-10)}
@@ -81,10 +107,20 @@ const Controls: React.FC<ControlsProps> = ({
             className="p-2 hover:bg-gray-700 rounded-full transition-custom"
           >
             <RotateCw className="w-6 h-6 text-accent-primary" />
+            </button>
+          <span className="text-sm text-text-secondary font-secondary">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
+          <button
+            onClick={onFullScreen}
+            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
+          >
+            {isFullScreen ? (
+              <Minus className="w-6 h-6 text-accent-primary" />
+            ) : (
+              <Fullscreen className="w-6 h-6 text-accent-primary" />
+            )}
           </button>
-              <span className="text-sm text-text-secondary font-secondary">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
         </div>
       </div>
       <div className="mt-2 relative w-full bg-gray-700 rounded-full h-2 overflow-hidden">
