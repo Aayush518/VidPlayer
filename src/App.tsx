@@ -1,21 +1,12 @@
+// src/App.tsx
 import React, { useState } from "react";
 import VideoPlayer from "./components/VideoPlayer";
 import VideoInfo from "./components/VideoInfo";
 import Playlist from "./components/Playlist";
+import { Video } from "./types"; 
 
-interface Video {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  duration: string;
-  author: string;
-  views: string;
-  uploadTime: string;
-  isLive: boolean;
-  subscriber: string;
-  description: string;
-  videoUrl: string;
-}
+
+
 
 const App: React.FC = () => {
   const [currentVideo, setCurrentVideo] = useState<Video>({

@@ -1,12 +1,10 @@
 import React from "react";
+import { Video } from "../types"; 
 
-interface Video {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  duration: string;
-  author: string;
-  views: string;
+interface PlaylistProps {
+  videos: Video[];
+  currentVideoId: string;
+  onVideoSelect: (video: Video) => void;
 }
 
 interface PlaylistProps {
