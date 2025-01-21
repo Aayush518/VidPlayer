@@ -67,7 +67,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
 
   return (
     <div>
-      <div className="relative aspect-video bg-lightbg rounded-xl overflow-hidden shadow-md">
+      <div className="relative aspect-video bg-dark-secondary rounded-xl overflow-hidden shadow-custom">
         <ReactPlayer
           ref={playerRef}
           url={videoUrl}

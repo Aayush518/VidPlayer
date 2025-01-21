@@ -21,8 +21,8 @@ const VideoInfo: React.FC<VideoInfoProps> = ({
 }) => {
   return (
     <div className="mt-6">
-      <h1 className="text-2xl font-bold text-textPrimary">{title}</h1>
-      <div className="mt-2 flex items-center gap-4 text-textSecondary">
+      <h1 className="text-2xl font-bold text-text-primary font-main">{title}</h1>
+      <div className="mt-2 flex items-center gap-4 text-text-secondary font-secondary">
         <span>{views} views</span>
         <span>•</span>
         <span>{uploadTime}</span>
@@ -33,10 +33,10 @@ const VideoInfo: React.FC<VideoInfoProps> = ({
         )}
       </div>
       <div className="mt-4">
-        <h3 className="font-semibold text-textPrimary">{author}</h3>
-        <p className="text-sm text-textSecondary">{subscriber}</p>
+        <h3 className="font-semibold text-text-primary font-main">{author}</h3>
+        <p className="text-sm text-text-secondary font-secondary">{subscriber}</p>
       </div>
-      <p className="mt-4 text-textSecondary whitespace-pre-line">
+      <p className="mt-4 text-text-secondary font-secondary whitespace-pre-line">
         {description}
       </p>
     </div>

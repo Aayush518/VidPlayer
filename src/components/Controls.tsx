@@ -36,27 +36,27 @@ const Controls: React.FC<ControlsProps> = ({
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
   return (
-    <div className="mt-4 flex flex-col bg-lightbg p-4 rounded-xl shadow-md">
+    <div className="mt-4 flex flex-col bg-dark-secondary p-4 rounded-xl shadow-custom">
       <div className="flex items-center gap-4">
         <button
           onClick={onPlayPause}
-          className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+          className="p-2 hover:bg-gray-700 rounded-full transition-custom"
         >
           {isPlaying ? (
-            <Pause className="w-6 h-6" />
+            <Pause className="w-6 h-6 text-accent-primary" />
           ) : (
-            <Play className="w-6 h-6" />
+            <Play className="w-6 h-6 text-accent-primary" />
           )}
         </button>
         <div className="flex items-center gap-2">
           <button
             onClick={onMuteToggle}
-            className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
           >
             {isMuted ? (
-              <VolumeX className="w-6 h-6" />
+              <VolumeX className="w-6 h-6 text-accent-primary" />
             ) : (
-              <Volume2 className="w-6 h-6" />
+              <Volume2 className="w-6 h-6 text-accent-primary" />
             )}
           </button>
           <input
@@ -66,23 +66,23 @@ const Controls: React.FC<ControlsProps> = ({
             step="0.1"
             value={volume}
             onChange={onVolumeChange}
-            className="w-24 accent-primary"
+            className="w-24 accent-accent-primary"
           />
         </div>
         <div className="flex items-center gap-2 ml-auto">
           <button
             onClick={() => onSeek(-10)}
-            className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
           >
-            <RotateCcw className="w-6 h-6" />
+            <RotateCcw className="w-6 h-6 text-accent-primary" />
           </button>
           <button
             onClick={() => onSeek(10)}
-            className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
           >
-            <RotateCw className="w-6 h-6" />
+            <RotateCw className="w-6 h-6 text-accent-primary" />
           </button>
-              <span className="text-sm text-gray-300">
+              <span className="text-sm text-text-secondary font-secondary">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
         </div>
@@ -99,7 +99,7 @@ const Controls: React.FC<ControlsProps> = ({
           step="0.001"
           value={progress}
           onChange={onProgressChange}
-          className="absolute top-0 left-0 w-full h-full appearance-none bg-transparent cursor-pointer accent-primary"
+          className="absolute top-0 left-0 w-full h-full appearance-none bg-transparent cursor-pointer accent-accent-primary"
           style={{
             background: `linear-gradient(to right, var(--tw-accent-primary) ${
               progress * 100
