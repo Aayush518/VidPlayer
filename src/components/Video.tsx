@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactPlayer from "react-player/lazy";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 const videos = [
   {
@@ -129,42 +130,144 @@ const videos = [
 ];
 
 const Video = () => {
-  const [currentVideo, setCurrentVideo] = React.useState(videos[0]);
+  const [currentVideo, setCurrentVideo] = useState(videos[0]);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    setIsMuted(newVolume === 0);
+  };
+
+  const handleMuteToggle = () => {
+    setIsMuted(!isMuted);
+    if (isMuted) {
+      setVolume(0.8);
+    } else {
+      setVolume(0);
+    }
+  };
 
   return (
-    <div className="h-screen grid grid-cols-4 w-full">
-      {/* Video Section */}
-      <div className="col-span-3 flex flex-col items-center justify-center">
-        <ReactPlayer
-          url={currentVideo.videoUrl}
-          controls
-          playing
-          width="90%"
-          height="60%"
-        />
-      </div>
-
-      {/* Playlist Section */}
-      <div className="col-span-1 bg-gray-100 overflow-y-auto">
-        <div className="flex flex-col space-y-4 p-4">
-          {videos.map((video) => (
-            <div
-              key={video.id}
-              className="flex space-x-2 p-2 border-b border-gray-300"
-              onClick={() => setCurrentVideo(video)}
-            >
-              <img
-                src={video.thumbnailUrl}
-                alt={video.title}
-                className="w-24 h-16 object-cover"
+    <div className="min-h-screen bg-gray-900 text-white">
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Video Section */}
+          <div className="lg:col-span-3">
+            <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
+              <ReactPlayer
+                url={currentVideo.videoUrl}
+                playing={isPlaying}
+                volume={volume}
+                muted={isMuted}
+                width="100%"
+                height="100%"
+                className="absolute top-0 left-0"
               />
-              <div className="flex flex-col justify-between">
-                <h1 className="text-sm font-bold">{video.title}</h1>
-                <p className="text-xs text-gray-600">{video.author}</p>
-                <p className="text-xs text-gray-600">{video.views} views</p>
+            </div>
+            
+            {/* Video Controls */}
+            <div className="mt-4 flex items-center gap-4 bg-gray-800 p-4 rounded-lg">
+              <button
+                onClick={handlePlayPause}
+                className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+              >
+                {isPlaying ? (
+                  <Pause className="w-6 h-6" />
+                ) : (
+                  <Play className="w-6 h-6" />
+                )}
+              </button>
+              
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleMuteToggle}
+                  className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-6 h-6" />
+                  ) : (
+                    <Volume2 className="w-6 h-6" />
+                  )}
+                </button>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  className="w-24 accent-blue-500"
+                />
               </div>
             </div>
-          ))}
+
+            {/* Video Info */}
+            <div className="mt-4">
+              <h1 className="text-2xl font-bold">{currentVideo.title}</h1>
+              <div className="mt-2 flex items-center gap-4 text-gray-400">
+                <span>{currentVideo.views} views</span>
+                <span>•</span>
+                <span>{currentVideo.uploadTime}</span>
+                {currentVideo.isLive && (
+                  <span className="bg-red-600 text-white px-2 py-1 rounded-full text-sm">
+                    LIVE
+                  </span>
+                )}
+              </div>
+              <div className="mt-4">
+                <h3 className="font-semibold">{currentVideo.author}</h3>
+                <p className="text-sm text-gray-400">{currentVideo.subscriber}</p>
+              </div>
+              <p className="mt-4 text-gray-300 whitespace-pre-line">
+                {currentVideo.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Playlist Section */}
+          <div className="lg:col-span-1">
+            <div className="bg-gray-800 rounded-lg p-4">
+              <h2 className="text-xl font-bold mb-4">Up Next</h2>
+              <div className="space-y-4">
+                {videos.map((video) => (
+                  <div
+                    key={video.id}
+                    onClick={() => setCurrentVideo(video)}
+                    className={`flex gap-4 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-colors ${
+                      currentVideo.id === video.id ? "bg-gray-700" : ""
+                    }`}
+                  >
+                    <div className="relative flex-shrink-0">
+                      <img
+                        src={video.thumbnailUrl}
+                        alt={video.title}
+                        className="w-40 h-24 object-cover rounded-lg"
+                      />
+                      <span className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 rounded">
+                        {video.duration}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-sm line-clamp-2">
+                        {video.title}
+                      </h3>
+                      <p className="text-gray-400 text-xs mt-1">{video.author}</p>
+                      <p className="text-gray-400 text-xs">
+                        {video.views} views
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
