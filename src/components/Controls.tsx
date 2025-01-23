@@ -37,7 +37,6 @@ const Controls: React.FC<ControlsProps> = ({
   playbackRate,
   onPlaybackRateChange,
   onFullScreen,
-  isFullScreen,
 }) => {
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);
