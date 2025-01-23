@@ -1,5 +1,6 @@
 import React from "react";
-import { Play, Pause, Volume2, VolumeX, RotateCw, RotateCcw, Fullscreen, Minus, Plus } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, RotateCw, RotateCcw, Fullscreen, Minus, Plus, Settings } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ControlsProps {
   isPlaying: boolean;
@@ -45,88 +46,23 @@ const Controls: React.FC<ControlsProps> = ({
   };
 
   return (
-    <div className="mt-4 flex flex-col bg-dark-secondary p-4 rounded-xl shadow-custom">
-      <div className="flex items-center gap-4">
-        <button
-          onClick={onPlayPause}
-          className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-        >
-          {isPlaying ? (
-            <Pause className="w-6 h-6 text-accent-primary" />
-          ) : (
-            <Play className="w-6 h-6 text-accent-primary" />
-          )}
-        </button>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={onMuteToggle}
-            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-          >
-            {isMuted ? (
-              <VolumeX className="w-6 h-6 text-accent-primary" />
-            ) : (
-              <Volume2 className="w-6 h-6 text-accent-primary" />
-            )}
-          </button>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.1"
-            value={volume}
-            onChange={onVolumeChange}
-            className="w-24 accent-accent-primary"
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onPlaybackRateChange(playbackRate - 0.25)}
-            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-          >
-            <Minus className="w-6 h-6 text-accent-primary" />
-          </button>
-          <span className="text-sm text-text-secondary font-secondary">
-            {playbackRate}x
-          </span>
-          <button
-            onClick={() => onPlaybackRateChange(playbackRate + 0.25)}
-            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-          >
-            <Plus className="w-6 h-6 text-accent-primary" />
-          </button>
-        </div>
-        <div className="flex items-center gap-2 ml-auto">
-          <button
-            onClick={() => onSeek(-10)}
-            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-          >
-            <RotateCcw className="w-6 h-6 text-accent-primary" />
-          </button>
-          <button
-            onClick={() => onSeek(10)}
-            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-          >
-            <RotateCw className="w-6 h-6 text-accent-primary" />
-            </button>
-          <span className="text-sm text-text-secondary font-secondary">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </span>
-          <button
-            onClick={onFullScreen}
-            className="p-2 hover:bg-gray-700 rounded-full transition-custom"
-          >
-            {isFullScreen ? (
-              <Minus className="w-6 h-6 text-accent-primary" />
-            ) : (
-              <Fullscreen className="w-6 h-6 text-accent-primary" />
-            )}
-          </button>
-        </div>
-      </div>
-      <div className="mt-2 relative w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-        <div
-          className="absolute bg-gray-500 h-full"
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-4 backdrop-blur-lg bg-gradient-to-t from-black/80 to-black/40 rounded-b-3xl"
+    >
+      {/* Progress Bar */}
+      <div className="group relative w-full h-2 mb-4">
+        <div className="absolute inset-0 rounded-full bg-surface-secondary/30" />
+        <div 
+          className="absolute inset-0 rounded-full bg-surface-secondary/50"
           style={{ width: `${buffered * 100}%` }}
+        />
+        <motion.div 
+          className="absolute inset-0 rounded-full bg-accent"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress * 100}%` }}
+          transition={{ duration: 0.1 }}
         />
         <input
           type="range"
@@ -135,15 +71,120 @@ const Controls: React.FC<ControlsProps> = ({
           step="0.001"
           value={progress}
           onChange={onProgressChange}
-          className="absolute top-0 left-0 w-full h-full appearance-none bg-transparent cursor-pointer accent-accent-primary"
-          style={{
-            background: `linear-gradient(to right, var(--tw-accent-primary) ${
-              progress * 100
-            }%, transparent ${progress * 100}%)`,
-          }}
+          className="absolute inset-0 w-full opacity-0 cursor-pointer"
         />
       </div>
-    </div>
+
+      <div className="flex items-center gap-4">
+        {/* Play/Pause Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onPlayPause}
+          className="control-button"
+        >
+          {isPlaying ? (
+            <Pause className="w-6 h-6" />
+          ) : (
+            <Play className="w-6 h-6" />
+          )}
+        </motion.button>
+
+        {/* Volume Controls */}
+        <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={onMuteToggle}
+            className="control-button"
+          >
+            {isMuted ? (
+              <VolumeX className="w-5 h-5" />
+            ) : (
+              <Volume2 className="w-5 h-5" />
+            )}
+          </motion.button>
+          <div className="group relative">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={volume}
+              onChange={onVolumeChange}
+              className="volume-slider"
+            />
+          </div>
+        </div>
+
+        {/* Time Display */}
+        <span className="text-sm font-medium text-white/80">
+          {formatTime(currentTime)} / {formatTime(duration)}
+        </span>
+
+        {/* Playback Speed */}
+        <div className="flex items-center gap-2 ml-auto">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => onPlaybackRateChange(playbackRate - 0.25)}
+            className="control-button"
+          >
+            <Minus className="w-4 h-4" />
+          </motion.button>
+          <span className="text-sm font-medium text-white/80 w-12 text-center">
+            {playbackRate}x
+          </span>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => onPlaybackRateChange(playbackRate + 0.25)}
+            className="control-button"
+          >
+            <Plus className="w-4 h-4" />
+          </motion.button>
+        </div>
+
+        {/* Seek Buttons */}
+        <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => onSeek(-10)}
+            className="control-button"
+          >
+            <RotateCcw className="w-5 h-5" />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => onSeek(10)}
+            className="control-button"
+          >
+            <RotateCw className="w-5 h-5" />
+          </motion.button>
+        </div>
+
+        {/* Settings & Fullscreen */}
+        <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="control-button"
+          >
+            <Settings className="w-5 h-5" />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={onFullScreen}
+            className="control-button"
+          >
+            <Fullscreen className="w-5 h-5" />
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

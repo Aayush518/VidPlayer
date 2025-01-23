@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import ReactPlayer from "react-player/lazy";
+import ReactPlayer from "react-player";
 import { Controls } from "./index";
 
 interface VideoPlayerProps {
@@ -14,8 +14,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
   const [buffered, setBuffered] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [playbackRate, setPlaybackRate] = useState(1); // Add playback rate state
-  const [isFullScreen, setIsFullScreen] = useState(false); // Add full-screen state
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const playerRef = useRef<ReactPlayer>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
@@ -64,7 +64,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
   };
 
   const handlePlaybackRateChange = (rate: number) => {
-    setPlaybackRate(rate);
+    setPlaybackRate(Math.max(0.25, Math.min(2, rate)));
   };
 
   const handleFullScreen = () => {
@@ -79,26 +79,31 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
   };
 
   useEffect(() => {
-    if (playerRef.current) {
-      setDuration(playerRef.current.getDuration());
-    }
-  }, [videoUrl]);
+    const handleFullscreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   return (
-    <div ref={playerContainerRef}>
-      <div className="relative aspect-video bg-dark-secondary rounded-xl overflow-hidden shadow-custom">
+    <div ref={playerContainerRef} className="video-player-wrapper">
+      <div className="aspect-w-16 aspect-h-9 relative">
         <ReactPlayer
           ref={playerRef}
           url={videoUrl}
+          width="100%"
+          height="100%"
           playing={isPlaying}
           volume={volume}
           muted={isMuted}
-          width="100%"
-          height="100%"
-          className="absolute top-0 left-0"
+          playbackRate={playbackRate}
           onProgress={handleProgress}
           onDuration={handleDuration}
-          playbackRate={playbackRate} // Add playback rate prop
+          className="absolute top-0 left-0"
         />
       </div>
       <Controls
