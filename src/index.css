@@ -1,23 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-primary/95 to-primary min-h-screen m-0 text-white;
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl;
+  }
+  
+  .video-player-wrapper {
+    @apply w-full overflow-hidden;
+  }
+  
+  .video-container {
+    @apply glass-effect p-6 shadow-glow;
+  }
+  
+  .video-player {
+    @apply rounded-2xl overflow-hidden shadow-2xl border border-white/10;
+  }
+  
+  .video-info {
+    @apply mt-6 p-6 glass-effect;
+  }
+  
+  .playlist-container {
+    @apply glass-effect p-4 max-h-[calc(100vh-2rem)] overflow-y-auto;
+  }
+  
+  .playlist-item {
+    @apply flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:bg-white/5 cursor-pointer border border-transparent;
+  }
+  
+  .playlist-item.active {
+    @apply bg-accent/10 border-accent;
+  }
+  
+  .control-button {
+    @apply p-3 rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 text-accent;
+  }
+  
+  .progress-bar {
+    @apply relative h-2 bg-white/10 rounded-full overflow-hidden cursor-pointer;
+  }
+  
+  .progress-bar-fill {
+    @apply absolute h-full bg-accent transition-all duration-300;
+  }
+  
+  .volume-slider {
+    @apply w-24 h-1 appearance-none bg-white/10 rounded-full outline-none;
+  }
+  
+  .volume-slider::-webkit-slider-thumb {
+    @apply appearance-none w-4 h-4 rounded-full bg-accent cursor-pointer hover:ring-4 hover:ring-accent/20 transition-all duration-300;
+  }
+  
+  .title-gradient {
+    @apply bg-gradient-to-r from-accent via-accent-secondary to-accent bg-clip-text text-transparent;
+  }
+}
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #4a5568; /* You can choose different colors */
-    border-radius: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #1e293b; /* You can choose different colors */
+  @apply bg-transparent;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background-color: #64748b; /* You can choose different colors */
+::-webkit-scrollbar-thumb {
+  @apply bg-accent/50 rounded-full hover:bg-accent transition-colors duration-300;
+}
+
+/* Animations */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px theme('colors.accent/20');
+  }
+  50% {
+    box-shadow: 0 0 40px theme('colors.accent/30');
+  }
+}
+
+.shadow-glow {
+  animation: glow 3s ease-in-out infinite;
 }

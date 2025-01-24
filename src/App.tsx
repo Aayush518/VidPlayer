@@ -1,10 +1,7 @@
-// src/App.tsx
 import React, { useState } from "react";
-import VideoPlayer from "./components/VideoPlayer";
-import VideoInfo from "./components/VideoInfo";
-import Playlist from "./components/Playlist";
-import { Video } from "./types"; 
-
+import { VideoPlayer, VideoInfo, Playlist } from "./components";
+import { Video } from "./types";
+import { motion } from "framer-motion";
 
 
 
@@ -150,18 +147,29 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-primary text-text-primary">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
-          {/* Main Content */}
-          <div>
-            {/* Video Player */}
-            <div className="rounded-xl overflow-hidden shadow-custom">
+    <div className="min-h-screen bg-gradient-to-br from-primary/95 to-primary p-6">
+      <div className="container mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6"
+        >
+          <div className="space-y-6">
+            <motion.div 
+              className="video-container"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               <VideoPlayer videoUrl={currentVideo.videoUrl} />
-            </div>
+            </motion.div>
 
-            {/* Video Info */}
-            <div className="mt-6">
+            <motion.div 
+              className="video-info"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
               <VideoInfo
                 title={currentVideo.title}
                 views={currentVideo.views}
@@ -171,18 +179,22 @@ const App: React.FC = () => {
                 subscriber={currentVideo.subscriber}
                 description={currentVideo.description}
               />
-            </div>
+            </motion.div>
           </div>
 
-          {/* Playlist */}
-          <div>
+          <motion.div 
+            className="playlist-container"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+          >
             <Playlist
               videos={videos}
               currentVideoId={currentVideo.id}
               onVideoSelect={handleVideoSelect}
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
