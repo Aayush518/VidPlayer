@@ -123,7 +123,7 @@ const App: React.FC = () => {
       description:
         " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
       subscriber: "25254545 Subscribers",
-      isLive: true,
+      isLive: false,
     },
     {
       id: "8",
