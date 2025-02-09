@@ -3,8 +3,6 @@ import { VideoPlayer, VideoInfo, Playlist } from "./components";
 import { Video } from "./types";
 import { motion } from "framer-motion";
 
-
-
 const App: React.FC = () => {
   const [currentVideo, setCurrentVideo] = useState<Video>({
     id: "1",
@@ -16,7 +14,8 @@ const App: React.FC = () => {
     uploadTime: "2 weeks ago",
     isLive: false,
     subscriber: "1M subscribers",
-    description: "Learn how to build a modern video player using React and TypeScript. This tutorial covers everything from basic setup to advanced features like playlists and custom controls.",
+    description:
+      "Learn how to build a modern video player using React and TypeScript. This tutorial covers everything from basic setup to advanced features like playlists and custom controls.",
     videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   });
 
@@ -31,7 +30,8 @@ const App: React.FC = () => {
       uploadTime: "2 weeks ago",
       isLive: false,
       subscriber: "1M subscribers",
-      description: "Learn how to build a modern video player using React and TypeScript.",
+      description:
+        "Learn how to build a modern video player using React and TypeScript.",
       videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     },
     {
@@ -56,29 +56,29 @@ const App: React.FC = () => {
       views: "24,969,123",
       author: "T-Series Regional",
       videoUrl:
-          "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       description:
-          "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
+        "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
       subscriber: "25254545 Subscribers",
       isLive: true,
-  },
-  {
+    },
+    {
       id: "4",
       title: "For Bigger Escape",
       thumbnailUrl:
-          "https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg",
+        "https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg",
       duration: "8:18",
       uploadTime: "May 9, 2011",
       views: "24,969,123",
       author: "T-Series Regional",
       videoUrl:
-          "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
       description:
-          " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
+        " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
       subscriber: "25254545 Subscribers",
       isLive: false,
-  },
-  {
+    },
+    {
       id: "5",
       title: "Big Buck Bunny",
       thumbnailUrl:
@@ -128,7 +128,24 @@ const App: React.FC = () => {
     {
       id: "8",
       title: "The first Blender Open Movie from 2006",
-      thumbnailUrl: "https://i.ytimg.com/vi_webp/gWw23EYM9VM/maxresdefault.webp",
+      thumbnailUrl:
+        "https://i.ytimg.com/vi_webp/gWw23EYM9VM/maxresdefault.webp",
+      duration: "12:18",
+      uploadTime: "May 9, 2011",
+      views: "24,969,123",
+      author: "Blender Inc.",
+      videoUrl:
+        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      description:
+        "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
+      subscriber: "25254545 Subscribers",
+      isLive: false,
+    },
+    {
+      id: "8",
+      title: "The first Blender Open Movie from 2006",
+      thumbnailUrl:
+        "https://i.ytimg.com/vi_webp/gWw23EYM9VM/maxresdefault.webp",
       duration: "12:18",
       uploadTime: "May 9, 2011",
       views: "24,969,123",
@@ -149,13 +166,13 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/95 to-primary p-6">
       <div className="container mx-auto">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6"
         >
           <div className="space-y-6">
-            <motion.div 
+            <motion.div
               className="video-container"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -164,7 +181,7 @@ const App: React.FC = () => {
               <VideoPlayer videoUrl={currentVideo.videoUrl} />
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="video-info"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -182,7 +199,7 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.div
             className="playlist-container"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
